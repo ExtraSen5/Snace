@@ -19,21 +19,20 @@ public:
 	void setonkey(ConMan * data); 
 	void Clear();
 	void Draw();
-	void virtual SnakePainter(Coord a, Dir b)
+	void virtual SnakePainter(Coord a, Dir b, std::string coller = "\x1b[0m")
 	{
-		gotoxy(a.first, a.second, "o^v<>"[b]);
+		gotoxy(a.first, a.second, "o^v<>"[b], coller);
 	}
 	void virtual RabbitPainter(Coord a)
 	{
-		gotoxy(a.first, a.second, '@');
+		gotoxy(a.first, a.second, '@', "\x1b[1m");
 	}
     void setonAI(Robot* R)
     {  
-        AId = R;
+        AIds.push_back(R);
     }
-	void gotoxy(int x, int y, char toprt);
+	void gotoxy(int x, int y, char toprt, std::string color = "\x1b[0m");
 	void Run();
-	void ReDraw();
 	~tui();
 };
 

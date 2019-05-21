@@ -5,6 +5,7 @@
 #include <utility>
 #include <functional>
 #include <vector>
+#include <cstdlib>
 enum Dir
 {
 	NO,
@@ -16,13 +17,18 @@ enum Dir
 
 using Coord = std::pair<int,int>;
 using Rabbit = Coord;
-using SnakePainter = std::function<void(Coord, Dir)>;
+using SnakePainter = std::function<void(Coord, Dir, std::string)>;
 using RabbitPainter = std::function<void(Coord)>;
 
 class Control;
 class Snake
 {
 public:
+    void setColler(int num)
+    {
+        coller = std::string("\x1b[") + std::to_string(num) + std::string("m");
+    }
+    std::string coller;
     bool SnakeDath;
 	void move();
     void Spos(Coord);
@@ -35,7 +41,7 @@ public:
 
 class Game
 {
-    int RabNum; 
+    int RabNum;
 public:
 	std::list<Snake*> snakes;
 	std::list<Rabbit> rabbits;

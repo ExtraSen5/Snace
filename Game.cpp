@@ -13,11 +13,11 @@ void Game::visitS(SnakePainter p)
 		{
 			if(first)
 			{
-				p(c, s -> dir);
+				p(c, s -> dir, s -> coller);
                 
 			}
 			else
-				p(c, NO);
+				p(c, NO, s -> coller);
 			first = false;
 		}
 
@@ -37,6 +37,7 @@ void Game::add(Snake * p)
 
 Snake::Snake()
 {
+    coller = "\x1b[0m";
     SnakeDath = false;
 	dir = RIGHT;
 	body.push_back(Coord(20,20));
@@ -46,8 +47,8 @@ void Game::newRab()
 {
 	auto v = tui::get();
 	auto t = *(tui*)v;
-	rabbits.push_back(Rabbit(rand()%(t.MinX() - 3) + 2,
-				rand()%(t.MinY() - 3) + 2));
+	rabbits.push_back(Rabbit(rand()%(t.MinX() - 3) + 1,
+        rand()%(t.MinY() - 3) + 1));
 }
 
 Game::Game(int RabNum = 0)
@@ -97,7 +98,7 @@ void Snake::move()
 	auto v = tui::get();
     std::list<Snake*> sn = tui::get() -> game -> snakes;
     for(auto i : sn)
-        if(find(++(i -> body.begin()), i -> body.end(), head) != i -> body.end() && this -> body.front() != i -> body.front())
+        if(find(i -> body.begin(), i -> body.end(), head) != i -> body.end() && this -> body.front() != i -> body.front())
         {
                 SnakeDath = true;
                 return;
@@ -106,8 +107,8 @@ void Snake::move()
     {
 		v -> game -> rabbits.remove(head);
     }
-    else if(find(++body.begin(), body.end(), head) != body.end() || head.first == 0 ||
-             head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+    else if(find(++body.begin(), body.end(), head) != body.end() || head.first < 0 ||
+             head.first > tui::get() -> MinX() - 3 || head.second > tui::get() -> MinY() - 3 || head.second < 0)
     {
         SnakeDath = true;
         return;

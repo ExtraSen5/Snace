@@ -59,29 +59,183 @@ void Robot::onthink()
     }
     
 	Coord head = s -> body.front();
-    Coord next_to_head = *(++(s -> body.begin()));
 	switch(s -> dir)
 	{
 		case(RIGHT): head.first++; break;
 		case(LEFT): head.first--; break;
 		case(DOWN): head.second++; break;
 		case(UP): head.second--; break;
-	} 
-	auto v = tui::get();
+	}
+     
     std::list<Snake*> sn = tui::get() -> game -> snakes;
-    //for(auto i : sn)
-    //    if(find(i -> body.begin(), i -> body.end(), head) != body.end() && this -> body.front() != i -> body.front())
-    //    {
-    //            SnakeDath = true;
-    //            return;
-    //    }
+    for(auto i : sn)
+        if(find(i -> body.begin(), i -> body.end(), head) != i -> body.end() && this -> s != i)
+        {
+            if(s -> dir == LEFT || s -> dir == RIGHT)
+            {
+                s -> setdirection((rand() % 2 == 0)?UP:DOWN);
+                Coord head = s -> body.front();
+                switch(s -> dir)
+                {
+                        case(RIGHT): head.first++; break;
+                        case(LEFT): head.first--; break;
+                        case(DOWN): head.second++; break;
+                        case(UP): head.second--; break;
+                }
+
+                std::list<Snake*> sn = tui::get() -> game -> snakes;
+                for(auto i : sn)
+                        if(find(i -> body.begin(), i -> body.end(), head) != i -> body.end() && this -> s != i)
+                        {
+                                if(s -> dir == UP)
+                                {
+                                        s -> setdirection(DOWN);
+                                }
+                                else
+                                {
+                                        s -> setdirection(UP); 
+                                }
+                        }
+
+                if(find(++(s -> body.begin()), s -> body.end(), head) != s -> body.end() || head.first == 0 ||
+                                head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+                {
+
+                        if(s -> dir == UP)
+                        {
+                                s -> setdirection(DOWN);
+                        }
+                        else
+                        {
+                                s -> setdirection(UP); 
+                        }
+                }
+            }
+            else
+            {
+                s -> setdirection((rand() % 2 == 0)?LEFT:RIGHT); 
+                Coord head = s -> body.front();
+                switch(s -> dir)
+                {
+                        case(RIGHT): head.first++; break;
+                        case(LEFT): head.first--; break;
+                        case(DOWN): head.second++; break;
+                        case(UP): head.second--; break;
+                }
+
+                std::list<Snake*> sn = tui::get() -> game -> snakes;
+                for(auto i : sn)
+                        if(find(i -> body.begin(), i -> body.end(), head) != i -> body.end() && this -> s != i)
+                        {
+                                if(s -> dir == LEFT)
+                                {
+                                        s -> setdirection(RIGHT);
+                                }
+                                else
+                                {
+                                        s -> setdirection(LEFT); 
+                                }
+                        }
+
+                if(find(++(s -> body.begin()), s -> body.end(), head) != s -> body.end() || head.first == 0 ||
+                                head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+                {
+
+                        if(s -> dir == LEFT)
+                        {
+                                s -> setdirection(RIGHT);
+                        }
+                        else
+                        {
+                                s -> setdirection(LEFT); 
+                        }
+                }
+            }
+        }
+
     if(find(++(s -> body.begin()), s -> body.end(), head) != s -> body.end() || head.first == 0 ||
-             head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+                    head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
     {
-        if(s -> dir == LEFT || s -> dir == RIGHT)
-            s -> setdirection((rand() % 2 == 0)?UP:DOWN);
-        else
-            s -> setdirection((rand() % 2 == 0)?LEFT:RIGHT); 
+            if(s -> dir == LEFT || s -> dir == RIGHT)
+            {
+                s -> setdirection((rand() % 2 == 0)?UP:DOWN);
+                Coord head = s -> body.front();
+                switch(s -> dir)
+                {
+                        case(RIGHT): head.first++; break;
+                        case(LEFT): head.first--; break;
+                        case(DOWN): head.second++; break;
+                        case(UP): head.second--; break;
+                }
+
+                std::list<Snake*> sn = tui::get() -> game -> snakes;
+                for(auto i : sn)
+                        if(find(i -> body.begin(), i -> body.end(), head) != i -> body.end() && this -> s != i)
+                        {
+                                if(s -> dir == UP)
+                                {
+                                        s -> setdirection(DOWN);
+                                }
+                                else
+                                {
+                                        s -> setdirection(UP); 
+                                }
+                        }
+
+                if(find(++(s -> body.begin()), s -> body.end(), head) != s -> body.end() || head.first == 0 ||
+                                head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+                {
+
+                        if(s -> dir == UP)
+                        {
+                                s -> setdirection(DOWN);
+                        }
+                        else
+                        {
+                                s -> setdirection(UP); 
+                        }
+                }
+            }
+            else
+            {
+                s -> setdirection((rand() % 2 == 0)?LEFT:RIGHT); 
+                Coord head = s -> body.front();
+                switch(s -> dir)
+                {
+                        case(RIGHT): head.first++; break;
+                        case(LEFT): head.first--; break;
+                        case(DOWN): head.second++; break;
+                        case(UP): head.second--; break;
+                }
+
+                std::list<Snake*> sn = tui::get() -> game -> snakes;
+                for(auto i : sn)
+                        if(find(i -> body.begin(), i -> body.end(), head) != i -> body.end() && this -> s != i)
+                        {
+                                if(s -> dir == LEFT)
+                                {
+                                        s -> setdirection(RIGHT);
+                                }
+                                else
+                                {
+                                        s -> setdirection(LEFT); 
+                                }
+                        }
+
+                if(find(++(s -> body.begin()), s -> body.end(), head) != s -> body.end() || head.first == 0 ||
+                                head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+                {
+
+                        if(s -> dir == LEFT)
+                        {
+                                s -> setdirection(RIGHT);
+                        }
+                        else
+                        {
+                                s -> setdirection(LEFT); 
+                        }
+                }
+            }
     }
 }
 
