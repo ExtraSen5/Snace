@@ -4,6 +4,7 @@
 #include <list>
 #include <utility>
 #include <functional>
+#include <vector>
 enum Dir
 {
 	NO,
@@ -22,15 +23,19 @@ class Control;
 class Snake
 {
 public:
+    bool SnakeDath;
 	void move();
+    void Spos(Coord);
 	void setdirection(Dir d);
 	Snake();
 	std::list <Coord> body;
-	Dir dir;	
+	Dir dir;
+    Dir last_dir;	
 };
 
 class Game
 {
+    int RabNum; 
 public:
 	std::list<Snake*> snakes;
 	std::list<Rabbit> rabbits;

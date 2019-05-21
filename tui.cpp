@@ -103,15 +103,16 @@ void tui::Run()
 
 			clock_gettime(NULL, &totime); 
 			int t2 = totime.tv_sec;
-			ontimer.first -= (t2 - t1);
+			ontimer.first -= (t2 - t1 > 0)?(t2 - t1):0;
 
 		}
 		else
 		{
+            AId -> onthink();
 			ontimer.first = MAX_TIMER;
 			//tui::get() -> game -> ontimer.second();
 			game -> move();
-			tui::get() -> Draw();
+			Draw();
 		}
 	}
 	Clear();

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "Game.hpp"
 #include "tui.hpp"
 
@@ -13,6 +14,7 @@ void Game::visitS(SnakePainter p)
 			if(first)
 			{
 				p(c, s -> dir);
+                
 			}
 			else
 				p(c, NO);
@@ -35,14 +37,9 @@ void Game::add(Snake * p)
 
 Snake::Snake()
 {
+    SnakeDath = false;
 	dir = RIGHT;
-	body.push_back(Coord(20,10));
-	body.push_back(Coord(19,10));
-	body.push_back(Coord(18,10));
-	body.push_back(Coord(17,10));
-	body.push_back(Coord(16,10));
-	body.push_back(Coord(15,10));
-	body.push_back(Coord(14,10));
+	body.push_back(Coord(20,20));
 }
 
 void Game::newRab()
@@ -51,12 +48,12 @@ void Game::newRab()
 	auto t = *(tui*)v;
 	rabbits.push_back(Rabbit(rand()%(t.MinX() - 3) + 2,
 				rand()%(t.MinY() - 3) + 2));
-
 }
 
-Game::Game(int RebNum = 0)
+Game::Game(int RabNum = 0)
 {
-	for(int i = 0; i < RebNum; i++)
+    this -> RabNum = RabNum;
+	for(int i = 0; i < RabNum; i++)
 		newRab();
 }
 
@@ -64,13 +61,19 @@ void Game::move()
 {
 	for(const auto s: snakes)
 	{
+        if(s -> SnakeDath)
+            continue;
 		s -> move();
+        if(RabNum != rabbits.size())
+            newRab();
 	}
 }
 
 void Snake::move()
 {
-	auto head = body.front();
+	Coord head = body.front();
+    Coord copy = body.front();
+    Coord next_to_head = *(++body.begin());
 	switch(dir)
 	{
 		case(RIGHT): head.first++; break;
@@ -78,26 +81,50 @@ void Snake::move()
 		case(DOWN): head.second++; break;
 		case(UP): head.second--; break;
 	}
-	body.push_front(head);
+    switch(dir)
+    {
+		case(RIGHT): copy.first--; break;
+		case(LEFT): copy.first++; break;
+		case(DOWN): copy.second--; break;
+		case(UP): copy.second++; break;
+    }
+    if(head == next_to_head)
+    {
+        head = copy;
+        dir = last_dir;
+    }
+   
 	auto v = tui::get();
-	auto g = [v,head]()
-	{
-		for(auto i = v -> game -> rabbits.begin();i != v -> game -> rabbits.end();i++)
-			if(*i == head)
-				return true;
-		return false;
-
-	};
-	if(g())
-	{
+    std::list<Snake*> sn = tui::get() -> game -> snakes;
+    for(auto i : sn)
+        if(find(++(i -> body.begin()), i -> body.end(), head) != i -> body.end() && this -> body.front() != i -> body.front())
+        {
+                SnakeDath = true;
+                return;
+        }
+	if(find(v -> game -> rabbits.begin(), v -> game -> rabbits.end(), head) != v -> game -> rabbits.end())
+    {
 		v -> game -> rabbits.remove(head);
-		v -> game -> newRab();
-	}
+    }
+    else if(find(++body.begin(), body.end(), head) != body.end() || head.first == 0 ||
+             head.first == tui::get() -> MinX() || head.second == tui::get() -> MinY() || head.second == 0)
+    {
+        SnakeDath = true;
+        return;
+    }
 	else
 		body.pop_back();
+	body.push_front(head);
 }
 
 void Snake::setdirection(Dir d)
 {
+    last_dir = dir;
 	dir = d;
+}
+
+void Snake::Spos(Coord c)
+{
+    body.pop_front();
+    body.push_front(c);
 }

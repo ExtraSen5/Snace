@@ -16,8 +16,15 @@ class ConMan :public Control, public keypressable
 public:
 	ConMan(Snake * p = nullptr);
 	void onkey(int key);
-};	
-
+};
+	
+class Robot:public Control
+{
+public:
+    void onthink();
+    Coord distance(Coord rab);
+    Robot(Snake*);
+};
 
 #endif
 

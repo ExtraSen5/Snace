@@ -27,6 +27,10 @@ public:
 	{
 		gotoxy(a.first, a.second, '@');
 	}
+    void setonAI(Robot* R)
+    {  
+        AId = R;
+    }
 	void gotoxy(int x, int y, char toprt);
 	void Run();
 	void ReDraw();
