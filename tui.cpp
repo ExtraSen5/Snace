@@ -1,3 +1,4 @@
+#include <signal.h>
 #include <termios.h>
 #include <time.h>
 #include <sys/ioctl.h>
@@ -122,7 +123,7 @@ void tui::Run()
 
 View * tui::get()
 {
-	static tui OneData;
+    static tui OneData;
 	return &OneData;
 }
 

@@ -30,18 +30,20 @@ void sigdr (int x)
 */
 
 int main()
-{	
-	auto sigdr = [](int x) 
-	{
+{
+    auto sigdr = [](int x)
+    {
         View * v = tui::get();
-		v -> Draw();
-	};
-    srand(time(NULL));	
-	struct termios term;
-	tcgetattr(1, &term);
-	cfmakeraw(&term);
-	tcsetattr(1,TCSANOW ,&term);
-	signal(SIGWINCH, sigdr);
+        v -> Draw();
+    };
+    srand(time(NULL));
+    struct termios term, copy_term;
+    tcgetattr(1, &term);
+    copy_term = term;
+    cfmakeraw(&term);
+    tcsetattr(1,TCSANOW ,&term);
+    signal(SIGWINCH, sigdr);
+	
 	Game g(20);
     Snake s;
     s.setColler(31);
@@ -66,19 +68,11 @@ int main()
     g.add(&Rs1);
     g.add(&Rs2);
     g.add(&Rs3);
+    
     View * v = tui::get();
     v -> game = &g;
     v -> Draw();
     v -> Run();
-    
-    pid_t f = fork(); 
-    if(f == 0)
-    {
-        execlp("stty", "stty", "sane", NULL);
-        perror(strerror(errno));
-        return 0;
-    }
-    waitpid(f, NULL, 0);
+    tcsetattr(1,TCSANOW,&copy_term);
     return 0;
-
 }

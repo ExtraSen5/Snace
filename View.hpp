@@ -1,14 +1,13 @@
 #ifndef VIEW_HPP
 #define VIEW_HPP
 
+#include <termios.h>
 #include "Game.hpp"
 #include "Control.hpp"
 #include "keypressable.hpp"
-
 class View
 {
 protected:
-	// use std::list;
 	std::pair<int, std::function<void(Game *)> > ontimer;
 public:	
 	keypressable * sub;

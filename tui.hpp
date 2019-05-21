@@ -9,9 +9,8 @@ class tui: public View
 {
 	void DrawRow(unsigned short Y);
 	void DrawCol(unsigned short X);
-	static View * OneData;
-	tui();
 public:
+    tui();
 	//void getontimer(int time, std::function<void(Game*)>) = 0;
 	unsigned short MinX();
 	unsigned short MinY();
