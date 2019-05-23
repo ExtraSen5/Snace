@@ -13,6 +13,8 @@
 
 #define MAX_TIMER 100
 
+View * itis_ = nullptr;
+
 using namespace std::placeholders;
 
 void tui::Clear()
@@ -93,8 +95,8 @@ void tui::Run()
 	struct timeval t1, t2;
 	while(1)
 	{
-        gettimeofday(&t1, NULL);
-		if(poll(&k, 1, ontimer.first))
+		gettimeofday(&t1, NULL);
+		if(poll(&k, 1, OnTime().first))
 		{
 			char ComeData;
 			read(1, &ComeData, 1);
@@ -102,18 +104,18 @@ void tui::Run()
 				break;
 			sub -> onkey(ComeData);
 
-            gettimeofday(&t2, NULL);
+			gettimeofday(&t2, NULL);
 			ontimer.first -= (t2.tv_sec-t1.tv_sec)*1000+(t2.tv_usec-t1.tv_usec)/1000;
-            if(ontimer.first < 0)
-                ontimer.first = 0;
+			if(ontimer.first < 0)
+				ontimer.first = 0;
 
 		}
 		else
 		{
-            for(auto item: AIds)
-                item -> onthink();
-			ontimer.first = MAX_TIMER;
-			game -> move();
+			for(auto item: AIds)
+				item -> onthink();
+			OnTime().second();
+			//game -> move();
 			Draw();
 		}
 	}
@@ -123,17 +125,13 @@ void tui::Run()
 
 View * tui::get()
 {
-    static tui OneData;
-	return &OneData;
+	if(itis_ == nullptr)
+		itis_ = new tui;
+	return itis_;
 }
 
 void tui::gotoxy(int x, int y, char toprt, std::string coller)
 {
 	printf("\e[%d;%dH",y + 2, x + 2);
 	printf("%s%c\x1b[0m",coller.c_str(), toprt);	
-}
-void View::getontimer(int time, std::function<void(Game*)> timeout)
-{
-	ontimer.first = time;
-	ontimer.second = timeout;
 }

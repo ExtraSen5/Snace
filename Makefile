@@ -1,6 +1,6 @@
 all:
-	g++-6 -c *.cpp 
-	g++-6 *.o -o test
+	g++ -c *.cpp 
+	g++ *.o -o test
 
 clear: 
 	rm -f *.o

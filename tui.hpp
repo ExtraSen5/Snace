@@ -10,8 +10,7 @@ class tui: public View
 	void DrawRow(unsigned short Y);
 	void DrawCol(unsigned short X);
 public:
-    tui();
-	//void getontimer(int time, std::function<void(Game*)>) = 0;
+	tui();
 	unsigned short MinX();
 	unsigned short MinY();
 	static View * get();
@@ -26,10 +25,10 @@ public:
 	{
 		gotoxy(a.first, a.second, '@', "\x1b[1m");
 	}
-    void setonAI(Robot* R)
-    {  
-        AIds.push_back(R);
-    }
+	void setonAI(Robot* R)
+	{  
+		AIds.push_back(R);
+	}
 	void gotoxy(int x, int y, char toprt, std::string color = "\x1b[0m");
 	void Run();
 	~tui();
