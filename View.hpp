@@ -18,6 +18,12 @@ class View
 			ontimer.first = time;
 			ontimer.second = act;
 		}
+		void TimerUpdata(int time)
+		{
+			ontimer.first -= time;
+			if(ontimer.first < 0)
+				ontimer.first = 0;
+		}
 		std::pair<int, TimeOutCost> OnTime() { return ontimer; }
 		keypressable * sub;
 		std::list<Robot *> AIds;

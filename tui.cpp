@@ -105,10 +105,7 @@ void tui::Run()
 			sub -> onkey(ComeData);
 
 			gettimeofday(&t2, NULL);
-			ontimer.first -= (t2.tv_sec-t1.tv_sec)*1000+(t2.tv_usec-t1.tv_usec)/1000;
-			if(ontimer.first < 0)
-				ontimer.first = 0;
-
+			TimerUpdata((t2.tv_sec-t1.tv_sec)*1000+(t2.tv_usec-t1.tv_usec)/1000);
 		}
 		else
 		{
